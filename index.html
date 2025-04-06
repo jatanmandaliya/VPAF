@@ -1,17 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Election Campaign</title>
     <style>
+        /* Theme Variables */
         :root {
+            /* Colors for Light Mode */
             --purple-dark: #4a148c;
             --purple-main: #6a1b9a;
             --purple-light: #9c27b0;
             --gold-dark: #c9a104;
             --gold-main: #ffd700;
             --gold-light: #fff4b8;
+            
+            /* Background and Text */
+            --bg-primary: #f9f9f9;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #f8f8f8;
+            --text-primary: #333333;
+            --text-secondary: #555555;
+            --card-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            --header-gradient: linear-gradient(135deg, var(--purple-dark), var(--purple-main));
+        }
+        
+        /* Dark Mode Theme */
+        [data-theme="dark"] {
+            --purple-dark: #2e0c59;
+            --purple-main: #4a1180;
+            --purple-light: #7b1fa2;
+            --gold-dark: #b38a00;
+            --gold-main: #ffc800;
+            --gold-light: #ffebb3;
+            
+            /* Background and Text */
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #252525;
+            --text-primary: #e0e0e0;
+            --text-secondary: #b0b0b0;
+            --card-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            --header-gradient: linear-gradient(135deg, #2e0c59, #4a1180);
         }
         
         * {
@@ -22,18 +52,124 @@
         }
         
         body {
-            background-color: #f9f9f9;
-            color: #333;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
             line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        /* Intro Animation */
+        .intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--purple-dark);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeOut 1s ease 4s forwards;
+        }
+        
+        .intro-text {
+            font-size: 3rem;
+            color: var(--gold-main);
+            text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease 0.5s forwards;
+        }
+        
+        .intro-subtext {
+            font-size: 1.8rem;
+            color: white;
+            margin-top: 1rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease 1.5s forwards;
+        }
+        
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { 
+                opacity: 0; 
+                visibility: hidden;
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes floatIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(-20px);
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes scaleIn {
+            from { 
+                transform: scale(0.8); 
+                opacity: 0;
+            }
+            to { 
+                transform: scale(1); 
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideInLeft {
+            from { 
+                transform: translateX(-50px);
+                opacity: 0;
+            }
+            to { 
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideInRight {
+            from { 
+                transform: translateX(50px);
+                opacity: 0;
+            }
+            to { 
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
         
         header {
-            background: linear-gradient(135deg, var(--purple-dark), var(--purple-main));
+            background: var(--header-gradient);
             color: white;
             padding: 0.5rem 0;
             text-align: center;
             position: relative;
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            animation: floatIn 1s ease 4.2s forwards;
         }
         
         .header-content {
@@ -62,19 +198,41 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            opacity: 0;
+            animation: floatIn 1s ease 4.4s forwards;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            width: 100%;
+            padding: 0 1rem;
         }
         
         .nav-links {
             display: flex;
-            justify-content: center;
             list-style: none;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1rem;
         }
         
         .nav-links li {
             margin: 0 1.5rem;
+            opacity: 0;
+        }
+        
+        .nav-links li:nth-child(1) {
+            animation: fadeInUp 0.5s ease 4.6s forwards;
+        }
+        
+        .nav-links li:nth-child(2) {
+            animation: fadeInUp 0.5s ease 4.8s forwards;
+        }
+        
+        .nav-links li:nth-child(3) {
+            animation: fadeInUp 0.5s ease 5s forwards;
         }
         
         .nav-links a {
@@ -82,17 +240,81 @@
             text-decoration: none;
             font-weight: 600;
             font-size: 1.1rem;
-            transition: color 0.3s ease;
+            transition: color 0.3s ease, transform 0.3s ease;
+            display: inline-block;
         }
         
         .nav-links a:hover {
             color: var(--gold-main);
+            transform: translateY(-3px);
+        }
+        
+        /* Theme Toggle Styles */
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            opacity: 0;
+            animation: fadeInUp 0.5s ease 5.2s forwards;
+        }
+        
+        .theme-toggle-label {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+            margin-left: 10px;
+        }
+        
+        .theme-toggle-label input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 30px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: var(--gold-main);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(30px);
+        }
+        
+        .toggle-icon {
+            color: white;
+            font-size: 1.2rem;
+            margin: 0 5px;
         }
         
         .main {
             max-width: 1200px;
             margin: 2rem auto;
             padding: 0 1rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease 5.2s forwards;
         }
         
         .hero {
@@ -100,10 +322,13 @@
             flex-direction: column;
             align-items: center;
             margin-bottom: 3rem;
-            background-color: white;
+            background-color: var(--bg-secondary);
             padding: 2rem;
             border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--card-shadow);
+            opacity: 0;
+            animation: scaleIn 1s ease 5.4s forwards;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
         }
         
         @media (min-width: 768px) {
@@ -122,6 +347,11 @@
             border: 5px solid var(--gold-main);
             margin-bottom: 2rem;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: transform 0.5s ease, border-color 0.3s ease;
+        }
+        
+        .candidate-photo:hover {
+            transform: scale(1.05) rotate(3deg);
         }
         
         @media (min-width: 768px) {
@@ -139,17 +369,21 @@
             font-size: 2.5rem;
             color: var(--purple-main);
             margin-bottom: 1rem;
+            transition: color 0.3s ease;
         }
         
         .candidate-position {
             font-size: 1.5rem;
             color: var(--gold-dark);
             margin-bottom: 1.5rem;
+            transition: color 0.3s ease;
         }
         
         .candidate-bio {
             margin-bottom: 1.5rem;
             line-height: 1.6;
+            color: var(--text-primary);
+            transition: color 0.3s ease;
         }
         
         .section-title {
@@ -159,6 +393,7 @@
             color: var(--purple-main);
             position: relative;
             padding-bottom: 0.5rem;
+            transition: color 0.3s ease;
         }
         
         .section-title::after {
@@ -170,14 +405,16 @@
             width: 100px;
             height: 3px;
             background-color: var(--gold-main);
+            transition: background-color 0.3s ease;
         }
         
         .goals {
             margin-bottom: 3rem;
-            background-color: white;
+            background-color: var(--bg-secondary);
             padding: 2rem;
             border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--card-shadow);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
         }
         
         .goal-items {
@@ -199,22 +436,29 @@
         }
         
         .goal-card {
-            background-color: #f8f8f8;
+            background-color: var(--bg-tertiary);
             border-left: 4px solid var(--purple-light);
             padding: 1.5rem;
             border-radius: 4px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+            opacity: 1;
         }
         
         .goal-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
         }
         
         .goal-card h3 {
             color: var(--purple-main);
             margin-bottom: 0.5rem;
             font-size: 1.3rem;
+            transition: color 0.3s ease;
+        }
+        
+        .goal-card p {
+            color: var(--text-primary);
+            transition: color 0.3s ease;
         }
         
         .slate {
@@ -240,22 +484,28 @@
         }
         
         .team-card {
-            background-color: white;
+            background-color: var(--bg-secondary);
             border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+            opacity: 1;
         }
         
         .team-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
         }
         
         .team-photo {
             width: 100%;
             height: 250px;
             object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .team-card:hover .team-photo {
+            transform: scale(1.05);
         }
         
         .team-info {
@@ -267,6 +517,7 @@
             font-size: 1.3rem;
             color: var(--purple-main);
             margin-bottom: 0.5rem;
+            transition: color 0.3s ease;
         }
         
         .team-position {
@@ -274,21 +525,30 @@
             color: var(--gold-dark);
             margin-bottom: 1rem;
             font-style: italic;
+            transition: color 0.3s ease;
         }
         
         .cta {
-            background: linear-gradient(135deg, var(--purple-dark), var(--purple-main));
+            background: var(--header-gradient);
             color: white;
             text-align: center;
             padding: 3rem 1rem;
             margin-top: 2rem;
             border-radius: 8px;
+            opacity: 1;
+            transition: background 0.3s ease;
         }
         
         .cta h2 {
             font-size: 2rem;
             margin-bottom: 1rem;
             color: var(--gold-main);
+            transition: color 0.3s ease;
+        }
+        
+        .cta p {
+            color: white;
+            margin-bottom: 1.5rem;
         }
         
         .cta-button {
@@ -303,11 +563,13 @@
             margin-top: 1.5rem;
             transition: background-color 0.3s ease, transform 0.3s ease;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            animation: pulse 2s infinite;
         }
         
         .cta-button:hover {
             background-color: var(--gold-light);
             transform: scale(1.05);
+            animation: none;
         }
         
         footer {
@@ -316,6 +578,8 @@
             text-align: center;
             padding: 2rem 0;
             margin-top: 3rem;
+            opacity: 1;
+            transition: background-color 0.3s ease;
         }
         
         .social-links {
@@ -327,16 +591,18 @@
         
         .social-links li {
             margin: 0 1rem;
+            opacity: 1;
         }
         
         .social-icon {
             color: var(--gold-main);
             font-size: 1.5rem;
-            transition: color 0.3s ease;
+            transition: color 0.3s ease, transform 0.3s ease;
         }
         
         .social-icon:hover {
             color: var(--gold-light);
+            transform: translateY(-3px);
         }
         
         .footer-nav {
@@ -349,26 +615,41 @@
         
         .footer-nav li {
             margin: 0.5rem 1rem;
+            opacity: 1;
         }
         
         .footer-nav a {
             color: var(--gold-light);
             text-decoration: none;
-            transition: color 0.3s ease;
+            transition: color 0.3s ease, transform 0.3s ease;
+            display: inline-block;
         }
         
         .footer-nav a:hover {
             color: var(--gold-main);
+            transform: translateY(-3px);
         }
         
         .copyright {
             margin-top: 1.5rem;
             font-size: 0.9rem;
             color: #ccc;
+            opacity: 1;
+        }
+        
+        /* Add animated entrance for goals and team */
+        .animate-in {
+            animation: fadeInUp 0.8s ease forwards;
         }
     </style>
 </head>
 <body>
+    <!-- Intro Animation Overlay -->
+    <div class="intro-overlay">
+        <h1 class="intro-text">Vote Jatan</h1>
+        <p class="intro-subtext">for Academic Affairs</p>
+    </div>
+
     <header>
         <div class="header-content">
             <h1 class="campaign-name">My Leadership, Our Future</h1>
@@ -377,12 +658,21 @@
     </header>
     
     <nav class="nav">
-        <ul class="nav-links">
-            <li><a href="#about">About</a></li>
-            <li><a href="#goals">Goals</a></li>
-            <li><a href="#team">Team</a></li>
-           
-        </ul>
+        <div class="nav-container">
+            <ul class="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#goals">Goals</a></li>
+                <li><a href="#team">Team</a></li>
+            </ul>
+            <div class="theme-toggle">
+                <span class="toggle-icon">☀️</span>
+                <label class="theme-toggle-label">
+                    <input type="checkbox" id="theme-toggle-input">
+                    <span class="slider"></span>
+                </label>
+                <span class="toggle-icon">🌙</span>
+            </div>
+        </div>
     </nav>
     
     <main class="main">
@@ -396,13 +686,10 @@
                     My primary goals are to ensure your voice is heard in academic governance, actively work to improve course availability despite budget limitations, and foster a rich and engaging collegiate experience for all.
                      I'm committed to championing your academic needs and connecting you with the resources and support you need to succeed.
                 </p>
-                <!-- <p class="candidate-bio">
-                    Throughout my career, I've demonstrated the ability to bring people together, listen to diverse viewpoints, and develop practical solutions to complex problems. I believe in transparent governance, inclusive decision-making, and sustainable progress that benefits everyone in our community.
-                </p> -->
             </div>
         </section>
         
-        <section class="goals" id="goals">
+        <section class="goals animate-in" id="goals">
             <h2 class="section-title">My Vision & Goals</h2>
             <div class="goal-items">
                 <div class="goal-card">
@@ -421,11 +708,10 @@
                     <h3>Foster a Rich and Engaging Collegiate Experience</h3>
                     <p>Promote opportunities for students to engage in activities outside the classroom, connecting them with programs, resources, and collaborative events that enrich their learning and overall university experience.</p>
                 </div>
-                
             </div>
         </section>
         
-        <section class="slate" id="team">
+        <section class="slate animate-in" id="team">
             <h2 class="section-title">Meet Our Team</h2>
             <div class="team-members">
                 <div class="team-card">
@@ -433,7 +719,6 @@
                     <div class="team-info">
                         <h3 class="team-name">Thyra Beckley</h3>
                         <p class="team-position">VP For External Affairs</p>
-                        <!-- <p>With over 10 years of experience in political campaign management, Jane brings strategic insight and organizational expertise to our team.</p> -->
                     </div>
                 </div>
                 <div class="team-card">
@@ -441,7 +726,6 @@
                     <div class="team-info">
                         <h3 class="team-name">Janel Anderson</h3>
                         <p class="team-position">Graduate Representative</p>
-                        <!-- <p>As a former legislative aide and policy analyst, Michael helps shape our platform with well-researched and practical policy proposals.</p> -->
                     </div>
                 </div>
                 <div class="team-card">
@@ -449,7 +733,6 @@
                     <div class="team-info">
                         <h3 class="team-name">Lucy Rios</h3>
                         <p class="team-position">Director of government and community relations</p>
-                        <!-- <p>Sarah's deep roots in the community and passion for public service make her the perfect liaison between our campaign and constituents.</p> -->
                     </div>
                 </div>
                 <div class="team-card">
@@ -457,7 +740,6 @@
                     <div class="team-info">
                         <h3 class="team-name">Diana Zaghoul</h3>
                         <p class="team-position">Science and Engineering Representative</p>
-                        <!-- <p>With a background in journalism and digital media, Robert crafts our message and ensures it reaches voters across all platforms.</p> -->
                     </div>
                 </div>
                 <div class="team-card">
@@ -465,7 +747,6 @@
                     <div class="team-info">
                         <h3 class="team-name">Hardik Patel</h3>
                         <p class="team-position">Business Representative</p>
-                        <!-- <p>Amanda's organizational skills and enthusiasm help mobilize our growing network of dedicated campaign volunteers.</p> -->
                     </div>
                 </div>
                 <div class="team-card">
@@ -473,7 +754,6 @@
                     <div class="team-info">
                         <h3 class="team-name">Jasmine Kimbrough</h3>
                         <p class="team-position">Health and Social Science Representative</p>
-                        <!-- <p>David's financial expertise ensures our campaign resources are managed effectively and transparently.</p> -->
                     </div>
                 </div>
                 <div class="team-card">
@@ -481,7 +761,6 @@
                     <div class="team-info">
                         <h3 class="team-name">Harry Kakadiya</h3>
                         <p class="team-position">Director of Social Justice and Equality</p>
-                        <!-- <p>David's financial expertise ensures our campaign resources are managed effectively and transparently.</p> -->
                     </div>
                 </div>
                 <div class="team-card">
@@ -489,7 +768,6 @@
                     <div class="team-info">
                         <h3 class="team-name">Ryan Alexander</h3>
                         <p class="team-position">Libral and Creative Arts Representative</p>
-                        <!-- <p>David's financial expertise ensures our campaign resources are managed effectively and transparently.</p> -->
                     </div>
                 </div>
                 <div class="team-card">
@@ -497,7 +775,6 @@
                     <div class="team-info">
                         <h3 class="team-name">Monica Hakobyan</h3>
                         <p class="team-position">Director of Sustainability and Basic Needs</p>
-                        <!-- <p>David's financial expertise ensures our campaign resources are managed effectively and transparently.</p> -->
                     </div>
                 </div>
                 <div class="team-card">
@@ -505,7 +782,6 @@
                     <div class="team-info">
                         <h3 class="team-name">Shivani Bokka</h3>
                         <p class="team-position">VP of Finance</p>
-                        <!-- <p>David's financial expertise ensures our campaign resources are managed effectively and transparently.</p> -->
                     </div>
                 </div>
                 <div class="team-card">
@@ -513,7 +789,6 @@
                     <div class="team-info">
                         <h3 class="team-name">Jaideep Reddy</h3>
                         <p class="team-position">Director of facilities and operations</p>
-                        <!-- <p>David's financial expertise ensures our campaign resources are managed effectively and transparently.</p> -->
                     </div>
                 </div>
             </div>
@@ -538,11 +813,121 @@
             <li><a href="#about">About</a></li>
             <li><a href="#goals">Goals</a></li>
             <li><a href="#team">Team</a></li>
-
             <li><a href="#">Privacy Policy</a></li>
         </ul>
         
         <p class="copyright">© 2025 Your Campaign. All Rights Reserved.</p>
     </footer>
+
+    <script>
+        // Wait for the DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set initial visibility to all important sections
+            document.querySelectorAll('.goal-card, .team-card, .section-title, .cta, footer, .social-links li, .footer-nav li, .copyright').forEach(function(element) {
+                element.style.opacity = "1";
+            });
+            
+            // Get the theme toggle input
+            const themeToggle = document.getElementById('theme-toggle-input');
+            
+            // Check if user previously set a preference
+            const currentTheme = localStorage.getItem('theme');
+            
+            // If user has previously set a preference, apply it
+            if (currentTheme) {
+                document.documentElement.setAttribute('data-theme', currentTheme);
+                
+                // Update the toggle switch
+                if (currentTheme === 'dark') {
+                    themeToggle.checked = true;
+                }
+            }
+            
+            // Theme toggle event listener
+            themeToggle.addEventListener('change', function() {
+                if (this.checked) {
+                    // Switch to dark mode
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    // Switch to light mode
+                    document.documentElement.setAttribute('data-theme', 'light');
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+            
+            // Function to check if an element is in viewport for subtle animations only
+            function isInViewport(element) {
+                const rect = element.getBoundingClientRect();
+                return (
+                    rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.8
+                );
+            }
+            
+            // Function to animate elements when they come into view (for subtle effects only)
+            function animateOnScroll() {
+                // Subtle hover effects and transitions remain active
+            }
+            
+            // Run on initial load after intro animation
+            setTimeout(function() {
+                // Make sure everything is visible
+                document.querySelector('.goals').style.opacity = "1";
+                document.querySelector('.goals').style.opacity = "1";
+                document.querySelector('.slate').style.opacity = "1";
+                
+                // Ensure goal cards are visible
+                document.querySelectorAll('.goal-card').forEach(function(card) {
+                    card.style.opacity = "1";
+                    card.style.transform = "translateY(0)";
+                });
+                
+                // Ensure team cards are visible
+                document.querySelectorAll('.team-card').forEach(function(card) {
+                    card.style.opacity = "1";
+                    card.style.transform = "translateY(0)";
+                });
+            }, 5500);
+            
+            // Add scroll event listener for subtle animations
+            window.addEventListener('scroll', animateOnScroll);
+            
+            // Add smooth scrolling for navigation
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 70, // Offset for sticky nav
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Apply system preference on first load if no user preference is set
+            if (!localStorage.getItem('theme')) {
+                // Check if user's system prefers dark mode
+                if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    themeToggle.checked = true;
+                }
+                
+                // Listen for changes in system preference
+                window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+                    if (!localStorage.getItem('theme')) {
+                        const newTheme = e.matches ? 'dark' : 'light';
+                        document.documentElement.setAttribute('data-theme', newTheme);
+                        themeToggle.checked = e.matches;
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>
